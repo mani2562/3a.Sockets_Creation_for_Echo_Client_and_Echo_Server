@@ -12,54 +12,29 @@ Sockets Links.
 ### SERVER:
 ```
 import socket
+s=socket.socket()
+s.bind(('localhost',8000))
+s.listen(5)
+c,addr=s.accept()
+while True:
+ ClientMessage=c.recv(1024).decode()
+ c.send(ClientMessage.encode())
 
-HOST = '127.0.0.1'  
-PORT = 65432        
-
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
-    server_socket.bind((HOST, PORT))
-    server_socket.listen()
-
-    print(f"Server is listening on {HOST}:{PORT}")
-    while True:
-        conn, addr = server_socket.accept()
-        with conn:
-            print(f"Connected by {addr}")
-            while True:
-                data = conn.recv(1024)
-                if not data:
-                    break
-                conn.sendall(data)
-                print(f"Echoed: {data.decode('utf-8')}")
 ```
 
 ### CLIENT:
 ```
-
 import socket
-
-HOST = '127.0.0.1'  
-PORT = 65432  
-
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
-    client_socket.connect((HOST, PORT))
-
-    message = 'Hello, Server!'
-    client_socket.sendall(message.encode('utf-8'))
-
-    data = client_socket.recv(1024)
-    print(f"Received echo: {data.decode('utf-8')}")
+s=socket.socket()
+s.connect(('localhost',8000))
+while True:
+ msg=input("Client > ")
+ s.send(msg.encode())
+ print("Server > ",s.recv(1024).decode())
 
 ```
 ## OUPUT
-
-### SERVER:
-
-<img width="932" height="218" alt="image" src="https://github.com/user-attachments/assets/ccf59e4b-a50a-4944-9e9b-119507a28c05" />
-
-### CLIENT:
-
-<img width="932" height="197" alt="image" src="https://github.com/user-attachments/assets/b49107e7-1b97-4821-8be0-42deb55d2986" />
+<img width="1585" height="740" alt="Screenshot 2026-05-19 112102" src="https://github.com/user-attachments/assets/4ccccda4-f1a8-4b03-b809-b0dacd8322be" />
 
 
 ## RESULT
